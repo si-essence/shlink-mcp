@@ -1,0 +1,105 @@
+{
+    "get": {
+        "operationId": "shortenUrl",
+        "deprecated": true,
+        "tags": [
+            "Short URLs"
+        ],
+        "summary": "Create a short URL",
+        "description": "**[Deprecated]** Use [Create short URL](#/Short%20URLs/createShortUrl) instead",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "name": "apiKey",
+                "in": "query",
+                "description": "The API key used to authenticate the request",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "longUrl",
+                "in": "query",
+                "description": "The URL to be shortened",
+                "required": true,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "format",
+                "in": "query",
+                "description": "The format in which you want the response to be returned. You can also use the \"Accept\" header instead of this",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "txt",
+                        "json"
+                    ]
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The list of short URLs",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../definitions/ShortUrl.json"
+                        },
+                        "example": {
+                            "longUrl": "https://github.com/shlinkio/shlink",
+                            "shortUrl": "https://s.test/abc123",
+                            "shortCode": "abc123",
+                            "dateCreated": "2016-08-21T20:34:16+02:00",
+                            "visitsSummary": {
+                                "total": 0,
+                                "nonBots": 0,
+                                "bots": 0
+                            },
+                            "tags": [
+                                "games",
+                                "tech"
+                            ],
+                            "meta": {
+                                "validSince": "2017-01-21T00:00:00+02:00",
+                                "validUntil": null,
+                                "maxVisits": 100
+                            },
+                            "domain": null,
+                            "title": null,
+                            "crawlable": false,
+                            "forwardQuery": true,
+                            "hasRedirectRules": false
+                        }
+                    },
+                    "text/plain": {
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "https://s.test/abc123"
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    },
+                    "text/plain": {
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

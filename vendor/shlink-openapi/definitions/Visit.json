@@ -1,0 +1,34 @@
+{
+    "type": "object",
+    "required": ["referer", "date", "userAgent", "visitLocation", "potentialBot", "visitedUrl"],
+    "properties": {
+        "referer": {
+            "type": "string",
+            "description": "The origin from which the visit was performed"
+        },
+        "date": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date in which the visit was performed"
+        },
+        "userAgent": {
+            "type": "string",
+            "description": "The user agent from which the visit was performed"
+        },
+        "visitLocation": {
+            "$ref": "./VisitLocation.json"
+        },
+        "potentialBot": {
+            "type": "boolean",
+            "description": "Tells if Shlink thinks this visit comes potentially from a bot or crawler"
+        },
+        "visitedUrl": {
+            "type": ["string", "null"],
+            "description": "The originally visited URL that triggered the tracking of this visit"
+        },
+        "redirectUrl": {
+            "type": ["string", "null"],
+            "description": "The URL to which the visitor was redirected, or null if a redirect did not occur, like for 404 requests or pixel tracking"
+        }
+    }
+}

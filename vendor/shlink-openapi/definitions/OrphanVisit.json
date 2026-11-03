@@ -1,0 +1,18 @@
+{
+    "type": "object",
+    "required": ["type"],
+    "allOf": [{
+        "$ref": "./Visit.json"
+    }],
+    "properties": {
+        "type": {
+            "type": "string",
+            "enum": [
+                "invalid_short_url",
+                "base_url",
+                "regular_404"
+            ],
+            "description": "Tells the type of orphan visit"
+        }
+    }
+}

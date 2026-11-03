@@ -1,0 +1,138 @@
+{
+    "openapi": "3.1.0",
+    "info": {
+        "title": "Shlink",
+        "description": "Shlink, the self-hosted URL shortener",
+        "version": "3.0"
+    },
+
+    "externalDocs": {
+        "url": "https://shlink.io/documentation/api-docs",
+        "description": "Find more info on how to start using this API here"
+    },
+
+    "servers": [
+        {
+            "url": "{scheme}://{host}",
+            "variables": {
+                "scheme": {
+                    "default": "https",
+                    "enum": ["https", "http"]
+                },
+                "host": {
+                    "default": ""
+                }
+            }
+        }
+    ],
+
+    "components": {
+        "securitySchemes": {
+            "ApiKey": {
+                "description": "A valid shlink API key",
+                "type": "apiKey",
+                "in": "header",
+                "name": "X-Api-Key"
+            }
+        }
+    },
+
+    "tags": [
+        {
+            "name": "Short URLs",
+            "description": "Operations that can be performed on short URLs"
+        },
+        {
+            "name": "Redirect rules",
+            "description": "Handle dynamic rule-based redirects"
+        },
+        {
+            "name": "Tags",
+            "description": "Let you handle the list of available tags"
+        },
+        {
+            "name": "Visits",
+            "description": "Operations to manage visits on short URLs"
+        },
+        {
+            "name": "Domains",
+            "description": "Operations to manage domains used on short URLs"
+        },
+        {
+            "name": "Integrations",
+            "description": "Handle services with which shlink is integrated"
+        },
+        {
+            "name": "Monitoring",
+            "description": "Public endpoints designed to monitor the service"
+        },
+        {
+            "name": "URL Shortener",
+            "description": "Non-rest endpoints, used to be publicly exposed"
+        }
+    ],
+
+    "paths": {
+        "/rest/v{version}/short-urls": {
+            "$ref": "paths/v1_short-urls.json"
+        },
+        "/rest/v{version}/short-urls/shorten": {
+            "$ref": "paths/v1_short-urls_shorten.json"
+        },
+        "/rest/v{version}/short-urls/{shortCode}": {
+            "$ref": "paths/v1_short-urls_{shortCode}.json"
+        },
+
+        "/rest/v{version}/short-urls/{shortCode}/redirect-rules": {
+            "$ref": "paths/v3_short-urls_{shortCode}_redirect-rules.json"
+        },
+
+        "/rest/v{version}/tags": {
+            "$ref": "paths/v1_tags.json"
+        },
+        "/rest/v{version}/tags/stats": {
+            "$ref": "paths/v2_tags_stats.json"
+        },
+
+        "/rest/v{version}/visits": {
+            "$ref": "paths/v2_visits.json"
+        },
+        "/rest/v{version}/short-urls/{shortCode}/visits": {
+            "$ref": "paths/v1_short-urls_{shortCode}_visits.json"
+        },
+        "/rest/v{version}/tags/{tag}/visits": {
+            "$ref": "paths/v2_tags_{tag}_visits.json"
+        },
+        "/rest/v{version}/domains/{domain}/visits": {
+            "$ref": "paths/v2_domains_{domain}_visits.json"
+        },
+        "/rest/v{version}/visits/orphan": {
+            "$ref": "paths/v2_visits_orphan.json"
+        },
+        "/rest/v{version}/visits/non-orphan": {
+            "$ref": "paths/v2_visits_non-orphan.json"
+        },
+
+        "/rest/v{version}/domains": {
+            "$ref": "paths/v2_domains.json"
+        },
+        "/rest/v{version}/domains/redirects": {
+            "$ref": "paths/v2_domains_redirects.json"
+        },
+
+        "/rest/v{version}/mercure-info": {
+            "$ref": "paths/v2_mercure-info.json"
+        },
+
+        "/rest/health": {
+            "$ref": "paths/health.json"
+        },
+
+        "/{shortCode}": {
+            "$ref": "paths/{shortCode}.json"
+        },
+        "/{shortCode}/track": {
+            "$ref": "paths/{shortCode}_track.json"
+        }
+    }
+}

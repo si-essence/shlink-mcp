@@ -1,0 +1,284 @@
+{
+  "source": "Shlink 5.1.8 REST API v3. Spec copied from vendor/shlink-openapi (MIT, Copyright 2016-2024 Alejandro Celaya). Mapping is local. No Shlink PHP is copied.",
+  "version": "5.1.8",
+  "apiVersion": "3",
+  "operations": [
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/short-urls",
+      "operationId": "listShortUrls",
+      "summary": "List short URLs",
+      "toolset": "short_urls",
+      "action": "list",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v{version}/short-urls",
+      "operationId": "createShortUrl",
+      "summary": "Create short URL",
+      "toolset": "short_urls_write",
+      "action": "create",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/short-urls/shorten",
+      "operationId": "shortenUrl",
+      "summary": "Create a short URL",
+      "exclude": true,
+      "reason": "Deprecated GET create. The operation accepts apiKey as a query parameter. Use createShortUrl, which sends X-Api-Key and never puts the key in the URL."
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/short-urls/{shortCode}",
+      "operationId": "getShortUrl",
+      "summary": "Parse short code",
+      "toolset": "short_urls",
+      "action": "get",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/rest/v{version}/short-urls/{shortCode}",
+      "operationId": "editShortUrl",
+      "summary": "Edit short URL",
+      "toolset": "short_urls_write",
+      "action": "edit",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "DELETE",
+      "path": "/rest/v{version}/short-urls/{shortCode}",
+      "operationId": "deleteShortUrl",
+      "summary": "Delete short URL",
+      "toolset": "short_urls_write",
+      "action": "delete",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/short-urls/{shortCode}/redirect-rules",
+      "operationId": "listShortUrlRedirectRules",
+      "summary": "List short URL redirect rules",
+      "toolset": "redirect_rules",
+      "action": "list",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "POST",
+      "path": "/rest/v{version}/short-urls/{shortCode}/redirect-rules",
+      "operationId": "setShortUrlRedirectRules",
+      "summary": "Set short URL redirect rules",
+      "toolset": "redirect_rules_write",
+      "action": "set",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/tags",
+      "operationId": "listTags",
+      "summary": "List existing tags",
+      "toolset": "tags",
+      "action": "list",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "PUT",
+      "path": "/rest/v{version}/tags",
+      "operationId": "renameTag",
+      "summary": "Rename tag",
+      "toolset": "tags_write",
+      "action": "rename",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "DELETE",
+      "path": "/rest/v{version}/tags",
+      "operationId": "deleteTags",
+      "summary": "Delete tags",
+      "toolset": "tags_write",
+      "action": "delete",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/tags/stats",
+      "operationId": "tagsWithStats",
+      "summary": "Get tags with stats",
+      "toolset": "tags",
+      "action": "stats",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/visits",
+      "operationId": "getGlobalVisits",
+      "summary": "Get general visits stats",
+      "toolset": "visits",
+      "action": "global",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/short-urls/{shortCode}/visits",
+      "operationId": "getShortUrlVisits",
+      "summary": "List visits for short URL",
+      "toolset": "visits",
+      "action": "short_url",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "DELETE",
+      "path": "/rest/v{version}/short-urls/{shortCode}/visits",
+      "operationId": "deleteShortUrlVisits",
+      "summary": "Delete visits for short URL",
+      "toolset": "visits_write",
+      "action": "delete_short_url",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/tags/{tag}/visits",
+      "operationId": "getTagVisits",
+      "summary": "List visits for tag",
+      "toolset": "visits",
+      "action": "tag",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/domains/{domain}/visits",
+      "operationId": "getDomainVisits",
+      "summary": "List visits for domain",
+      "toolset": "visits",
+      "action": "domain",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/visits/orphan",
+      "operationId": "getOrphanVisits",
+      "summary": "List orphan visits",
+      "toolset": "visits",
+      "action": "orphan",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "DELETE",
+      "path": "/rest/v{version}/visits/orphan",
+      "operationId": "deleteOrphanVisits",
+      "summary": "Delete orphan visits",
+      "toolset": "visits_write",
+      "action": "delete_orphan",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/visits/non-orphan",
+      "operationId": "getNonOrphanVisits",
+      "summary": "List non-orphan visits",
+      "toolset": "visits",
+      "action": "non_orphan",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/domains",
+      "operationId": "listDomains",
+      "summary": "List configured domains",
+      "toolset": "domains",
+      "action": "list",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "PATCH",
+      "path": "/rest/v{version}/domains/redirects",
+      "operationId": "setDomainRedirects",
+      "summary": "Sets domain \"not found\" redirects",
+      "toolset": "domains_write",
+      "action": "set_not_found",
+      "auth": "key",
+      "write": true,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/v{version}/mercure-info",
+      "operationId": "mercureInfo",
+      "summary": "Get mercure integration info",
+      "toolset": "meta",
+      "action": "mercure",
+      "auth": "key",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/rest/health",
+      "operationId": "health",
+      "summary": "Check healthiness",
+      "toolset": "meta",
+      "action": "health",
+      "auth": "none",
+      "write": false,
+      "exclude": false
+    },
+    {
+      "method": "GET",
+      "path": "/{shortCode}",
+      "operationId": "shortUrl",
+      "summary": "Short URL",
+      "exclude": true,
+      "reason": "Public redirect at /{shortCode}. It is not the REST API. A request records a visit and returns 302. Hit it with plain HTTP, outside this connector."
+    },
+    {
+      "method": "GET",
+      "path": "/{shortCode}/track",
+      "operationId": "trackShortUrl",
+      "summary": "Short URL tracking pixel",
+      "exclude": true,
+      "reason": "Tracking pixel at /{shortCode}/track. It returns an image, not a JSON REST resource."
+    }
+  ]
+}

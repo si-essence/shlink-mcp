@@ -1,0 +1,132 @@
+{
+    "patch": {
+        "operationId": "setDomainRedirects",
+        "tags": [
+            "Domains"
+        ],
+        "summary": "Sets domain \"not found\" redirects",
+        "description": "Sets the URLs that you want a visitor to get redirected to for \"not found\" URLs for a specific domain",
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            }
+        ],
+        "requestBody": {
+            "description": "Request body.",
+            "required": true,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "allOf": [
+                            {
+                                "required": ["domain"],
+                                "properties": {
+                                    "domain": {
+                                        "description": "The domain's authority for which you want to set redirects",
+                                        "type": "string"
+                                    }
+                                }
+                            },
+                            {
+                                "$ref": "../definitions/NotFoundRedirects.json"
+                            }
+                        ]
+                    }
+                }
+            }
+        },
+        "responses": {
+            "200": {
+                "description": "The domain's redirects after the update, when existing redirects have been merged with provided ones.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "required": ["baseUrlRedirect", "regular404Redirect", "invalidShortUrlRedirect"]
+                                },
+                                {
+                                    "$ref": "../definitions/NotFoundRedirects.json"
+                                }
+                            ]
+                        },
+                        "example": {
+                            "baseUrlRedirect": "https://example.com/my-landing-page",
+                            "regular404Redirect": null,
+                            "invalidShortUrlRedirect": "https://example.com/invalid-url"
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Provided data is invalid.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "type": "object",
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["invalidElements"],
+                                    "properties": {
+                                        "invalidElements": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "domain",
+                                                    "baseUrlRedirect",
+                                                    "regular404Redirect",
+                                                    "invalidShortUrlRedirect"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "https://shlink.io/api/error/invalid-data",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["domain", "invalidShortUrlRedirect"]
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "INVALID_ARGUMENT",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["domain", "invalidShortUrlRedirect"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

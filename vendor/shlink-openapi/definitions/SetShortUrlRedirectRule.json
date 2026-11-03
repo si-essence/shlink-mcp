@@ -1,0 +1,43 @@
+{
+  "type": "object",
+  "required": ["longUrl", "conditions"],
+  "properties": {
+    "longUrl": {
+      "description": "Long URL to redirect to when this condition matches",
+      "type": "string"
+    },
+    "conditions": {
+      "description": "List of conditions that need to match in order to consider this rule matches",
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["type", "matchKey", "matchValue"],
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": [
+              "device",
+              "language",
+              "query-param",
+              "any-value-query-param",
+              "valueless-query-param",
+              "ip-address",
+              "geolocation-country-code",
+              "geolocation-city-name",
+              "before-date",
+              "after-date",
+              "browser"
+            ],
+            "description": "The type of the condition, which will determine the logic used to match it"
+          },
+          "matchKey":  {
+            "type": ["string", "null"]
+          },
+          "matchValue":  {
+            "type": ["string", "null"]
+          }
+        }
+      }
+    }
+  }
+}

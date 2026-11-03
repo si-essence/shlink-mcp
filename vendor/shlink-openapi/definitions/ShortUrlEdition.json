@@ -1,0 +1,40 @@
+{
+    "type": "object",
+    "properties": {
+        "longUrl": {
+            "description": "The long URL this short URL will redirect to",
+            "type": "string"
+        },
+        "validSince": {
+            "description": "The date (in ISO-8601 format) from which this short code will be valid",
+            "type": ["string", "null"]
+        },
+        "validUntil": {
+            "description": "The date (in ISO-8601 format) until which this short code will be valid",
+            "type": ["string", "null"]
+        },
+        "maxVisits": {
+            "description": "The maximum number of allowed visits for this short code",
+            "type": ["number", "null"]
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "The list of tags to set to the short URL."
+        },
+        "title": {
+            "type": ["string", "null"],
+            "description": "A descriptive title of the short URL."
+        },
+        "crawlable": {
+            "type": "boolean",
+            "description": "Tells if this URL will be included as 'Allow' in Shlink's robots.txt."
+        },
+        "forwardQuery": {
+            "type": "boolean",
+            "description": "Tells if the query params should be forwarded from the short URL to the long one, as explained in [the docs](https://shlink.io/documentation/some-features/#query-params-forwarding)."
+        }
+    }
+}

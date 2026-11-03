@@ -1,0 +1,385 @@
+{
+    "get": {
+        "operationId": "getShortUrl",
+        "tags": [
+            "Short URLs"
+        ],
+        "summary": "Parse short code",
+        "description": "Get the long URL behind a short URL's short code.",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "$ref": "../parameters/shortCode.json"
+            },
+            {
+                "$ref": "../parameters/domain.json"
+            }
+        ],
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The URL info behind a short code.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../definitions/ShortUrl.json"
+                        },
+                        "example": {
+                            "shortCode": "12Kb3",
+                            "shortUrl": "https://s.test/12Kb3",
+                            "longUrl": "https://shlink.io",
+                            "dateCreated": "2016-05-01T20:34:16+02:00",
+                            "visitsSummary": {
+                                "total": 1029,
+                                "nonBots": 820,
+                                "bots": 209
+                            },
+                            "tags": [
+                                "shlink"
+                            ],
+                            "meta": {
+                                "validSince": "2017-01-21T00:00:00+02:00",
+                                "validUntil": null,
+                                "maxVisits": 100
+                            },
+                            "domain": null,
+                            "title": null,
+                            "crawlable": false,
+                            "forwardQuery": true,
+                            "hasRedirectRules": true
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "No URL was found for provided short code.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["shortCode"],
+                                    "properties": {
+                                        "shortCode": {
+                                            "type": "string",
+                                            "description": "The short code with which we tried to find the short URL"
+                                        },
+                                        "domain": {
+                                            "type": "string",
+                                            "description": "The domain with which we tried to find the short URL"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "Short URL not found": {
+                                "$ref": "../examples/short-url-not-found-v3.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "patch": {
+        "operationId": "editShortUrl",
+        "tags": [
+            "Short URLs"
+        ],
+        "summary": "Edit short URL",
+        "description": "Update certain meta arguments from an existing short URL.",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "$ref": "../parameters/shortCode.json"
+            },
+            {
+                "$ref": "../parameters/domain.json"
+            }
+        ],
+        "requestBody": {
+            "description": "Request body.",
+            "required": true,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "$ref": "../definitions/ShortUrlEdition.json"
+                    }
+                }
+            }
+        },
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The short URL has been properly updated.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "$ref": "../definitions/ShortUrl.json"
+                        },
+                        "example": {
+                            "shortCode": "12Kb3",
+                            "shortUrl": "https://s.test/12Kb3",
+                            "longUrl": "https://shlink.io",
+                            "dateCreated": "2016-05-01T20:34:16+02:00",
+                            "visitsSummary": {
+                                "total": 1029,
+                                "nonBots": 900,
+                                "bots": 129
+                            },
+                            "tags": [
+                                "shlink"
+                            ],
+                            "meta": {
+                                "validSince": "2017-01-21T00:00:00+02:00",
+                                "validUntil": null,
+                                "maxVisits": 100
+                            },
+                            "domain": null,
+                            "title": "Shlink - The URL shortener",
+                            "crawlable": false,
+                            "forwardQuery": false,
+                            "hasRedirectRules": true
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Provided meta arguments are invalid.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "type": "object",
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["invalidElements"],
+                                    "properties": {
+                                        "invalidElements": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": [
+                                                    "longUrl",
+                                                    "validSince",
+                                                    "validUntil",
+                                                    "maxVisits"
+                                                ]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "Invalid arguments": {
+                                "$ref": "../examples/short-url-invalid-args-v3.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "No URL was found for provided short code.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["shortCode"],
+                                    "properties": {
+                                        "shortCode": {
+                                            "type": "string",
+                                            "description": "The short code with which we tried to find the short URL"
+                                        },
+                                        "domain": {
+                                            "type": "string",
+                                            "description": "The domain with which we tried to find the short URL"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "Short URL not found": {
+                                "$ref": "../examples/short-url-not-found-v3.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "delete": {
+        "operationId": "deleteShortUrl",
+        "tags": [
+            "Short URLs"
+        ],
+        "summary": "Delete short URL",
+        "description": "Deletes the short URL for provided short code.",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "$ref": "../parameters/shortCode.json"
+            },
+            {
+                "$ref": "../parameters/domain.json"
+            }
+        ],
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "204": {
+                "description": "The short URL has been properly deleted."
+            },
+            "422": {
+                "description": "The visits threshold in shlink does not allow this short URL to be deleted.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["shortCode", "threshold"],
+                                    "properties": {
+                                        "shortCode": {
+                                            "type": "string",
+                                            "description": "The short code with which we tried to find the short URL to delete"
+                                        },
+                                        "domain": {
+                                            "type": "string",
+                                            "description": "The domain with which we tried to find the short URL to delete"
+                                        },
+                                        "threshold": {
+                                            "type": "number",
+                                            "description": "The amount of visits currently configured as threshold to allow deleting short URLs or not"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "title": "Cannot delete short URL",
+                                    "type": "https://shlink.io/api/error/invalid-short-url-deletion",
+                                    "detail": "Impossible to delete short URL with short code \"abc123\", since it has more than \"15\" visits.",
+                                    "status": 422,
+                                    "shortCode": "abc123",
+                                    "threshold": 15
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "title": "Cannot delete short URL",
+                                    "type": "INVALID_SHORT_URL_DELETION",
+                                    "detail": "Impossible to delete short URL with short code \"abc123\", since it has more than \"15\" visits.",
+                                    "status": 422,
+                                    "shortCode": "abc123",
+                                    "threshold": 15
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "No URL was found for provided short code.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["shortCode"],
+                                    "properties": {
+                                        "shortCode": {
+                                            "type": "string",
+                                            "description": "The short code with which we tried to find the short URL"
+                                        },
+                                        "domain": {
+                                            "type": "string",
+                                            "description": "The domain with which we tried to find the short URL"
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "Short URL not found": {
+                                "$ref": "../examples/short-url-not-found-v3.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

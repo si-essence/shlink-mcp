@@ -1,0 +1,28 @@
+{
+    "get": {
+        "operationId": "trackShortUrl",
+        "tags": [
+            "URL Shortener"
+        ],
+        "summary": "Short URL tracking pixel",
+        "description": "Generates a 1px transparent image which can be used to track emails with a short URL",
+        "parameters": [
+            {
+                "$ref": "../parameters/shortCode.json"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Image in GIF format",
+                "content": {
+                    "image/gif": {
+                        "schema": {
+                            "type": "string",
+                            "format": "binary"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

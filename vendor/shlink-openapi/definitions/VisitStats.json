@@ -1,0 +1,12 @@
+{
+    "type": "object",
+    "required": ["nonOrphanVisits", "orphanVisits"],
+    "properties": {
+        "nonOrphanVisits": {
+            "$ref": "./VisitsSummary.json"
+        },
+        "orphanVisits": {
+            "$ref": "./VisitsSummary.json"
+        }
+    }
+}

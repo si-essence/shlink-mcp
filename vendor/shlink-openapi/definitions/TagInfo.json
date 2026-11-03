@@ -1,0 +1,17 @@
+{
+    "type": "object",
+    "required": ["tag", "shortUrlsCount", "visitsSummary"],
+    "properties": {
+        "tag": {
+            "type": "string",
+            "description": "The unique tag name"
+        },
+        "shortUrlsCount": {
+            "type": "number",
+            "description": "The amount of short URLs using this tag"
+        },
+        "visitsSummary": {
+            "$ref": "./VisitsSummary.json"
+        }
+    }
+}

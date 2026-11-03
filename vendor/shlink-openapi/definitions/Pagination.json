@@ -1,0 +1,25 @@
+{
+    "type": "object",
+    "properties": {
+        "currentPage": {
+            "type": "integer",
+            "description": "The number of current page."
+        },
+        "pagesCount": {
+            "type": "integer",
+            "description": "The total number of pages that can be obtained."
+        },
+        "itemsPerPage": {
+            "type": "integer",
+            "description": "The number of items for every page."
+        },
+        "itemsInCurrentPage": {
+            "type": "integer",
+            "description": "The number of items in current page (could be smaller than itemsPerPage)."
+        },
+        "totalItems": {
+            "type": "integer",
+            "description": "The total number of items among all pages."
+        }
+    }
+}

@@ -1,0 +1,69 @@
+{
+    "type": "object",
+    "required": [
+        "shortCode",
+        "shortUrl",
+        "longUrl",
+        "dateCreated",
+        "visitsSummary",
+        "tags",
+        "meta",
+        "domain",
+        "title",
+        "crawlable",
+        "forwardQuery",
+        "hasRedirectRules"
+    ],
+    "properties": {
+        "shortCode": {
+            "type": "string",
+            "description": "The short code for this short URL."
+        },
+        "shortUrl": {
+            "type": "string",
+            "description": "The short URL."
+        },
+        "longUrl": {
+            "type": "string",
+            "description": "The original long URL."
+        },
+        "dateCreated": {
+            "type": "string",
+            "format": "date-time",
+            "description": "The date in which the short URL was created in ISO format."
+        },
+        "visitsSummary": {
+            "$ref": "./VisitsSummary.json"
+        },
+        "tags": {
+            "type": "array",
+            "items": {
+                "type": "string"
+            },
+            "description": "A list of tags applied to this short URL"
+        },
+        "meta": {
+            "$ref": "./ShortUrlMeta.json"
+        },
+        "domain": {
+            "type": ["string", "null"],
+            "description": "The domain in which the short URL was created. Null if it belongs to default domain."
+        },
+        "title": {
+            "type": ["string", "null"],
+            "description": "A descriptive title of the short URL."
+        },
+        "crawlable": {
+            "type": "boolean",
+            "description": "Tells if this URL will be included as 'Allow' in Shlink's robots.txt."
+        },
+        "forwardQuery": {
+            "type": "boolean",
+            "description": "Tells if this URL will forward the query params to the long URL when visited, as explained in [the docs](https://shlink.io/documentation/some-features/#query-params-forwarding)."
+        },
+        "hasRedirectRules": {
+            "type": "boolean",
+            "description": "Whether this short URL has redirect rules attached to it or not. Use [this endpoint](https://api-spec.shlink.io/#/Redirect%20rules/listShortUrlRedirectRules) to get the actual list of rules."
+        }
+    }
+}

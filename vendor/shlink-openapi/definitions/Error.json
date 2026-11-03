@@ -1,0 +1,22 @@
+{
+    "type": "object",
+    "required": ["type", "title", "detail", "status"],
+    "properties": {
+        "type": {
+            "type": "string",
+            "description": "A machine unique code"
+        },
+        "title": {
+            "type": "string",
+            "description": "A unique title"
+        },
+        "detail": {
+            "type": "string",
+            "description": "A human-friendly error description"
+        },
+        "status": {
+            "type": "number",
+            "description": "HTTP response status code"
+        }
+    }
+}

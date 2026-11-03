@@ -1,0 +1,110 @@
+{
+    "get": {
+        "operationId": "listDomains",
+        "tags": [
+            "Domains"
+        ],
+        "summary": "List configured domains",
+        "description": "Returns the list of all domains that have been either used for some short URL, or have explicitly configured redirects.<br/>It also includes the domain redirects, plus the default redirects that will be used for any non-explicitly-configured one.",
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The list of domains",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "required": ["domains"],
+                            "properties": {
+                                "domains": {
+                                    "type": "object",
+                                    "required": ["data"],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "object",
+                                                "required": ["domain", "isDefault", "redirects"],
+                                                "properties": {
+                                                    "domain":  {
+                                                        "type": "string"
+                                                    },
+                                                    "isDefault": {
+                                                        "type": "boolean"
+                                                    },
+                                                    "redirects": {
+                                                        "$ref": "../definitions/NotFoundRedirects.json"
+                                                    }
+                                                }
+                                            }
+                                        },
+                                        "defaultRedirects": {
+                                            "$ref": "../definitions/NotFoundRedirects.json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "domains": {
+                                "data": [
+                                    {
+                                        "domain": "example.com",
+                                        "isDefault": true,
+                                        "redirects": {
+                                            "baseUrlRedirect": "https://example.com/my-landing-page",
+                                            "regular404Redirect": null,
+                                            "invalidShortUrlRedirect": "https://example.com/invalid-url"
+                                        }
+                                    },
+                                    {
+                                        "domain": "aaa.com",
+                                        "isDefault": false,
+                                        "redirects":  {
+                                            "baseUrlRedirect": null,
+                                            "regular404Redirect": null,
+                                            "invalidShortUrlRedirect": null
+                                        }
+                                    },
+                                    {
+                                        "domain": "bbb.com",
+                                        "isDefault": false,
+                                        "redirects":  {
+                                            "baseUrlRedirect": null,
+                                            "regular404Redirect": null,
+                                            "invalidShortUrlRedirect": "https://example.com/invalid-url"
+                                        }
+                                    }
+                                ],
+                                "defaultRedirects": {
+                                    "baseUrlRedirect": "https://somewhere.com",
+                                    "regular404Redirect": null,
+                                    "invalidShortUrlRedirect": null
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

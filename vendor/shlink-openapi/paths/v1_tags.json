@@ -1,0 +1,354 @@
+{
+    "get": {
+        "operationId": "listTags",
+        "tags": [
+            "Tags"
+        ],
+        "summary": "List existing tags",
+        "description": "Returns the list of all tags used in any short URL",
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "description": "The page to display. Defaults to 1",
+                "required": false,
+                "schema": {
+                    "type": "number"
+                }
+            },
+            {
+                "name": "itemsPerPage",
+                "in": "query",
+                "description": "The amount of items to return on every page. Defaults to all the items",
+                "required": false,
+                "schema": {
+                    "type": "number"
+                }
+            },
+            {
+                "name": "searchTerm",
+                "in": "query",
+                "description": "A query used to filter results by searching for it on the tag name.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "orderBy",
+                "in": "query",
+                "description": "To determine how to order the results.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": [
+                        "tag-ASC",
+                        "tag-DESC"
+                    ]
+                }
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "The list of tags",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tags": {
+                                    "type": "object",
+                                    "required": ["data"],
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "../definitions/Pagination.json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "tags": {
+                                "data": [
+                                    "games",
+                                    "php",
+                                    "shlink",
+                                    "tech"
+                                ],
+                                "pagination": {
+                                    "currentPage": 5,
+                                    "pagesCount": 10,
+                                    "itemsPerPage": 4,
+                                    "itemsInCurrentPage": 4,
+                                    "totalItems": 38
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "put": {
+        "operationId": "renameTag",
+        "tags": [
+            "Tags"
+        ],
+        "summary": "Rename tag",
+        "description": "Renames one existing tag",
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            }
+        ],
+        "requestBody": {
+            "description": "Request body.",
+            "required": true,
+            "content": {
+                "application/json": {
+                    "schema": {
+                        "type": "object",
+                        "required": [
+                            "oldName",
+                            "newName"
+                        ],
+                        "properties": {
+                            "oldName": {
+                                "description": "Current name of the tag",
+                                "type": "string"
+                            },
+                            "newName": {
+                                "description": "New name of the tag",
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "responses": {
+            "204": {
+                "description": "The tag has been properly renamed"
+            },
+            "400": {
+                "description": "You have not provided either the oldName or the newName params.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "https://shlink.io/api/error/invalid-data",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["oldName", "newName"]
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "INVALID_ARGUMENT",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["oldName", "newName"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "403": {
+                "description": "The API key you used does not have permissions to rename tags.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "detail": "You are not allowed to rename tags",
+                                    "title": "Forbidden tag operation",
+                                    "type": "https://shlink.io/api/error/forbidden-tag-operation",
+                                    "status": 403
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "detail": "You are not allowed to rename tags",
+                                    "title": "Forbidden tag operation",
+                                    "type": "FORBIDDEN_OPERATION",
+                                    "status": 403
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "404": {
+                "description": "There's no tag found with the name provided in oldName param.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "$ref": "../examples/tag-not-found-v3.json"
+                            }
+                        }
+                    }
+                }
+            },
+            "409": {
+                "description": "The name provided in newName param is already in use for another tag.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "detail": "You cannot rename tag foo, because it already exists",
+                                    "title": "Tag conflict",
+                                    "type": "https://shlink.io/api/error/tag-conflict",
+                                    "status": 409,
+                                    "oldName": "bar",
+                                    "newName": "foo"
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "detail": "You cannot rename tag foo, because it already exists",
+                                    "title": "Tag conflict",
+                                    "type": "TAG_CONFLICT",
+                                    "status": 409,
+                                    "oldName": "bar",
+                                    "newName": "foo"
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "delete": {
+        "operationId": "deleteTags",
+        "tags": [
+            "Tags"
+        ],
+        "summary": "Delete tags",
+        "description": "Deletes provided list of tags",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "name": "tags[]",
+                "in": "query",
+                "description": "The names of the tags to delete",
+                "required": true,
+                "schema": {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            }
+        ],
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "204": {
+                "description": "Tags properly deleted"
+            },
+            "403": {
+                "description": "The API key you used does not have permissions to delete tags.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "detail": "You are not allowed to delete tags",
+                                    "title": "Forbidden tag operation",
+                                    "type": "https://shlink.io/api/error/forbidden-tag-operation",
+                                    "status": 403
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "detail": "You are not allowed to delete tags",
+                                    "title": "Forbidden tag operation",
+                                    "type": "FORBIDDEN_OPERATION",
+                                    "status": 403
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

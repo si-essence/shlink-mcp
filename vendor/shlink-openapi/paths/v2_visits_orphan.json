@@ -1,0 +1,264 @@
+{
+    "get": {
+        "operationId": "getOrphanVisits",
+        "tags": [
+            "Visits"
+        ],
+        "summary": "List orphan visits",
+        "description": "Get the list of visits to invalid short URLs, the base URL or any other 404.",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            },
+            {
+                "name": "startDate",
+                "in": "query",
+                "description": "The date (in ISO-8601 format) from which we want to get visits.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "endDate",
+                "in": "query",
+                "description": "The date (in ISO-8601 format) until which we want to get visits.",
+                "required": false,
+                "schema": {
+                    "type": "string"
+                }
+            },
+            {
+                "name": "page",
+                "in": "query",
+                "description": "The page to display. Defaults to 1",
+                "required": false,
+                "schema": {
+                    "type": "number"
+                }
+            },
+            {
+                "name": "itemsPerPage",
+                "in": "query",
+                "description": "The amount of items to return on every page. Defaults to all the items",
+                "required": false,
+                "schema": {
+                    "type": "number"
+                }
+            },
+            {
+                "name": "excludeBots",
+                "in": "query",
+                "description": "Tells if visits from potential bots should be excluded from the result set",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": ["true"]
+                }
+            },
+            {
+                "name": "type",
+                "in": "query",
+                "description": "The type of visits to return. All visits are returned when not provided.",
+                "required": false,
+                "schema": {
+                    "type": "string",
+                    "enum": ["invalid_short_url", "base_url", "regular_404"]
+                }
+            },
+            {
+                "$ref": "../parameters/domain.json",
+                "description": "Return only visits for this domain. Use **DEFAULT** keyword to return visits from default domain."
+            }
+        ],
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "List of visits.",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "visits": {
+                                    "type": "object",
+                                    "properties": {
+                                        "data": {
+                                            "type": "array",
+                                            "items": {
+                                                "$ref": "../definitions/OrphanVisit.json"
+                                            }
+                                        },
+                                        "pagination": {
+                                            "$ref": "../definitions/Pagination.json"
+                                        }
+                                    }
+                                }
+                            }
+                        },
+                        "example": {
+                            "visits": {
+                                "data": [
+                                    {
+                                        "referer": "https://twitter.com",
+                                        "date": "2015-08-20T05:05:03+04:00",
+                                        "userAgent": "Mozilla/5.0 (Windows NT 6.1; Win64; x64; rv:47.0) Gecko/20100101 Firefox/47.0 Mozilla/5.0 (Macintosh; Intel Mac OS X x.y; rv:42.0) Gecko/20100101 Firefox/42.0",
+                                        "visitLocation": null,
+                                        "potentialBot": false,
+                                        "visitedUrl": "https://s.test",
+                                        "type": "base_url"
+                                    },
+                                    {
+                                        "referer": "https://t.co",
+                                        "date": "2015-08-20T05:05:03+04:00",
+                                        "userAgent": "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/51.0.2704.103 Safari/537.36",
+                                        "visitLocation": {
+                                            "cityName": "Cupertino",
+                                            "countryCode": "US",
+                                            "countryName": "United States",
+                                            "latitude": 37.3042,
+                                            "longitude": -122.0946,
+                                            "regionName": "California",
+                                            "timezone": "America/Los_Angeles"
+                                        },
+                                        "potentialBot": false,
+                                        "visitedUrl": "https://s.test/foo",
+                                        "type": "invalid_short_url"
+                                    },
+                                    {
+                                        "referer": null,
+                                        "date": "2015-08-20T05:05:03+04:00",
+                                        "userAgent": "some_web_crawler/1.4",
+                                        "visitLocation": null,
+                                        "potentialBot": true,
+                                        "visitedUrl": "https://s.test/foo/bar/baz",
+                                        "type": "regular_404"
+                                    }
+                                ],
+                                "pagination": {
+                                    "currentPage": 5,
+                                    "pagesCount": 12,
+                                    "itemsPerPage": 10,
+                                    "itemsInCurrentPage": 10,
+                                    "totalItems": 115
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "400": {
+                "description": "Provided query arguments are invalid.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "type": "object",
+                            "allOf": [
+                                {
+                                    "$ref": "../definitions/Error.json"
+                                },
+                                {
+                                    "type": "object",
+                                    "required": ["invalidElements"],
+                                    "properties": {
+                                        "invalidElements": {
+                                            "type": "array",
+                                            "items": {
+                                                "type": "string",
+                                                "enum": ["type"]
+                                            }
+                                        }
+                                    }
+                                }
+                            ]
+                        },
+                        "examples": {
+                            "API v3 and newer": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "https://shlink.io/api/error/invalid-data",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["type"]
+                                }
+                            },
+                            "Previous to API v3": {
+                                "value": {
+                                    "title": "Invalid data",
+                                    "type": "INVALID_ARGUMENT",
+                                    "detail": "Provided data is not valid",
+                                    "status": 400,
+                                    "invalidElements": ["type"]
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    },
+
+    "delete": {
+        "operationId": "deleteOrphanVisits",
+        "tags": [
+            "Visits"
+        ],
+        "summary": "Delete orphan visits",
+        "description": "Delete all visits to invalid short URLs, the base URL or any other 404.",
+        "parameters": [
+            {
+                "$ref": "../parameters/version.json"
+            }
+        ],
+        "security": [
+            {
+                "ApiKey": []
+            }
+        ],
+        "responses": {
+            "200": {
+                "description": "Deleted visits",
+                "content": {
+                    "application/json": {
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "deletedVisits": {
+                                    "description": "Amount of affected visits",
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "example": {
+                            "deletedVisits": 536
+                        }
+                    }
+                }
+            },
+            "default": {
+                "description": "Unexpected error.",
+                "content": {
+                    "application/problem+json": {
+                        "schema": {
+                            "$ref": "../definitions/Error.json"
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
